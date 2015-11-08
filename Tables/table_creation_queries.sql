@@ -17,6 +17,7 @@ CREATE TABLE `BI_user`
 ,`username` VARCHAR(24) NOT NULL
 ,`is_active` TINYINT(1) NOT NULL
 ,PRIMARY KEY (`id`)
+,UNIQUE KEY `username` (`username`)
 )ENGINE = InnoDB;
 
 
