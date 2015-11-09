@@ -31,10 +31,16 @@ CREATE TABLE `BI_password`
 ,FOREIGN KEY (`user_id`) REFERENCES `BI_user` (`id`)
 )ENGINE = InnoDB;
 
-CREATE TABLE `BI_accounts`
-(id INT(11) NOT NULL AUTO_INCREMENT
-
-,PRIMARY KEY (`id`)
+CREATE TABLE `BI_accounts` (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  user_id INT(11) NOT NULL,
+  account_type_id INT(11) NOT NULL,
+  is_active TINYINT(1) NOT NULL,
+  current_balance INT(11),
+  last_transaction_date DATE NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (user_id) REFERENCES BI_user (id),
+  FOREIGN KEY (account_type_id) REFERENCES BI_account_types (id)
 )ENGINE = InnoDB; 
 
 
@@ -48,10 +54,20 @@ CREATE TABLE `BI_account_types`
 )ENGINE = InnoDB; 
 
 CREATE TABLE `BI_account_transactions`
-(id INT(11) NOT NULL AUTO_INCREMENT
-
-,PRIMARY KEY (`id`)
-)ENGINE = InnoDB; 
+(
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  payee_account_id INT(11) NOT NULL,
+  payer_account_id INT(11) NOT NULL,
+  amount INT(11) NOT NULL,
+  transaction_date DATE NOT NULL,
+  transaction_type_id INT(11) NOT NULL,
+  memo VARCHAR(255) NOT NULL,
+  posting_date DATE NOT NULL,
+  isVoid TINYINT(1) NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (payee_account_id) REFERENCES BI_accounts (id),
+  FOREIGN KEY (payer_account_id) REFERENCES BI_accounts (id),
+)ENGINE = InnoDB;
 
 CREATE TABLE `BI_account_fee`
 (`id` INT(11) NOT NULL AUTO_INCREMENT
