@@ -61,7 +61,7 @@ CREATE TABLE `BI_account_transactions`
   amount INT(11) NOT NULL,
   transaction_date DATE NOT NULL,
   transaction_type_id INT(11) NOT NULL,
-  memo VARCHAR(255) NOT NULL,
+  memo TEXT,
   posting_date DATE NOT NULL,
   isVoid TINYINT(1) NOT NULL,
   PRIMARY KEY (id),
