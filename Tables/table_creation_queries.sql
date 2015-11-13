@@ -1,10 +1,10 @@
-DROP TABLE IF EXISTS `BI_password`;
-DROP TABLE IF EXISTS `BI_account_fee`;
-DROP TABLE IF EXISTS `BI_transaction_types`;
-DROP TABLE IF EXISTS `BI_account_types`;
 DROP TABLE IF EXISTS `BI_account_transactions`;
 DROP TABLE IF EXISTS `BI_accounts`;
+DROP TABLE IF EXISTS `BI_password`;
 DROP TABLE IF EXISTS `BI_user`;
+DROP TABLE IF EXISTS `BI_account_types`;
+DROP TABLE IF EXISTS `BI_account_fee`;
+DROP TABLE IF EXISTS `BI_transaction_types`;
 
 
 CREATE TABLE `BI_user`
@@ -34,6 +34,7 @@ CREATE TABLE `BI_password`
 CREATE TABLE `BI_account_fee`
 (`id` INT(11) NOT NULL AUTO_INCREMENT
 ,`amount` DECIMAL(10,2) NOT NULL 
+,`description` VARCHAR(50) NOT NULL
 ,PRIMARY KEY (`id`)
 )ENGINE = InnoDB; 
 
@@ -41,7 +42,7 @@ CREATE TABLE `BI_account_types`
 (id INT(11) NOT NULL AUTO_INCREMENT
 ,`type_name` VARCHAR(50) NOT NULL
 ,`interest_rate` DECIMAL(10,4) NOT NULL
-,`fee_type_id` INT(11) NOT NULL
+,`fee_type_id` INT(11) NULL
 ,PRIMARY KEY (`id`)
 ,FOREIGN KEY (`fee_type_id`) REFERENCES `BI_account_fee` (`id`)
 )ENGINE = InnoDB; 
@@ -51,7 +52,7 @@ CREATE TABLE `BI_accounts` (
   `user_id` INT(11) NOT NULL,
   `account_type_id` INT(11) NOT NULL,
   `is_active` TINYINT(1) NOT NULL,
-  `current_balance` INT(11),
+  `current_balance` DECIMAL(10,2),
   `last_transaction_date` DATE NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`user_id`) REFERENCES BI_user (`id`),
