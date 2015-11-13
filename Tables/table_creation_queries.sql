@@ -71,7 +71,7 @@ CREATE TABLE `BI_account_transactions`
   id INT(11) NOT NULL AUTO_INCREMENT,
   payee_account_id INT(11) NOT NULL,
   payer_account_id INT(11) NOT NULL,
-  amount INT(11) NOT NULL,
+  amount DECIMAL(10,2) NOT NULL,
   transaction_date DATE NOT NULL,
   transaction_type_id INT(11) NOT NULL,
   memo TEXT,
