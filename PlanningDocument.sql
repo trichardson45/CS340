@@ -47,10 +47,11 @@ week 7
 	Table creation queries -- Verified w/inserts
 	
 week 8 
+     ER diagram of Database -- matt
+     Database schema -- matt
+	 html -- trent 
 
-database outline
-ER diagram of Database
-Database schema
-html
-php
-style
+week 9 
+	 database outline
+	 php
+	 style
