@@ -1,33 +1,71 @@
---these are very basic to see how the account updates work.  it seems to work, but need to check references
---to make sure all tables are called and updated accordingly.  obviously, all real numbers will come from user
+--transaction queries (deposit, withdrawl, transfer, payment)
 
 --deposit
 UPDATE BI_accounts
-SET current_balance = current_balance + 101.35
-WHERE id = 1;
+SET current_balance = current_balance + [amount]
+WHERE user_id = [CURR_USER] AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name = [CURR_SELECT]);
 
 INSERT INTO BI_account_transactions (payee_account_id, payer_account_id, amount, transaction_date, transaction_type_id, memo, posting_date, isVoid)
-VALUES (1, 1, +101.35, CURRENT_TIMESTAMP, 1, "Testing, 1,2,3", CURRENT_TIMESTAMP, 0);
+VALUES (SELECT id FROM BI_accounts WHERE 
+user_id = [CURR_USER] AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name = [CURR_SELECT]),
+SELECT id FROM BI_accounts WHERE 
+user_id = [CURR_USER] AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name = [CURR_SELECT]), 
++[amount], CURRENT_TIMESTAMP, 1, [memo], CURRENT_TIMESTAMP, 0);
 
 --withdrawl
 UPDATE BI_accounts
-SET current_balance = current_balance - 100.50
-WHERE id = 7;
+SET current_balance = current_balance - [amount]
+WHERE user_id = [CURR_USER] AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name = [CURR_SELECT]);
 
 INSERT INTO BI_account_transactions (payee_account_id, payer_account_id, amount, transaction_date, transaction_type_id, memo, posting_date, isVoid)
-VALUES (7, 7, -100.50, CURRENT_TIMESTAMP, 1, "Testing, 1,2,3", CURRENT_TIMESTAMP, 0);
+VALUES (SELECT id FROM BI_accounts WHERE 
+user_id = [CURR_USER] AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name = [CURR_SELECT]),
+SELECT id FROM BI_accounts WHERE 
+user_id = [CURR_USER] AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name = [CURR_SELECT]), 
+-[amount], CURRENT_TIMESTAMP, 4, [memo], CURRENT_TIMESTAMP, 0);
 
 --transfer
 UPDATE BI_accounts
-SET current_balance = current_balance - 100.50
-WHERE id = 3;
+SET current_balance = current_balance - [amount]
+WHERE user_id = [CURR_USER] AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name = [CURR_SELECT]);
 
 INSERT INTO BI_account_transactions (payee_account_id, payer_account_id, amount, transaction_date, transaction_type_id, memo, posting_date, isVoid)
-VALUES (5, 3, -100.50, CURRENT_TIMESTAMP, 1, "Testing, 1,2,3", CURRENT_TIMESTAMP, 0);
+VALUES (SELECT id FROM BI_accounts WHERE 
+user_id = [USER_SELECT] AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name = [CURR_SELECT]),
+SELECT id FROM BI_accounts WHERE 
+user_id = [CURR_USER] AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name = [CURR_SELECT]), 
+-[amount], CURRENT_TIMESTAMP, 3, [memo], CURRENT_TIMESTAMP, 0);
 
 UPDATE BI_accounts
-SET current_balance = current_balance + 100.50
-WHERE id = 5;
+SET current_balance = current_balance + [amount]
+WHERE user_id = [USER_SELECT] AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name = [CURR_SELECT]);
 
 INSERT INTO BI_account_transactions (payee_account_id, payer_account_id, amount, transaction_date, transaction_type_id, memo, posting_date, isVoid)
-VALUES (5, 3, +100.50, CURRENT_TIMESTAMP, 1, "Testing, 1,2,3", CURRENT_TIMESTAMP, 0);
+VALUES (SELECT id FROM BI_accounts WHERE 
+user_id = [USER_SELECT] AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name = [CURR_SELECT]),
+SELECT id FROM BI_accounts WHERE 
+user_id = [CURR_USER] AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name = [CURR_SELECT]), 
++[amount], CURRENT_TIMESTAMP, 3, [memo], CURRENT_TIMESTAMP, 0);
+
+--payment (same as transfer, except recorded as payment)
+UPDATE BI_accounts
+SET current_balance = current_balance - [amount]
+WHERE user_id = [CURR_USER] AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name = [CURR_SELECT]);
+
+INSERT INTO BI_account_transactions (payee_account_id, payer_account_id, amount, transaction_date, transaction_type_id, memo, posting_date, isVoid)
+VALUES (SELECT id FROM BI_accounts WHERE 
+user_id = [USER_SELECT] AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name = [CURR_SELECT]),
+SELECT id FROM BI_accounts WHERE 
+user_id = [CURR_USER] AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name = [CURR_SELECT]), 
+-[amount], CURRENT_TIMESTAMP, 2, [memo], CURRENT_TIMESTAMP, 0);
+
+UPDATE BI_accounts
+SET current_balance = current_balance + [amount]
+WHERE user_id = [USER_SELECT] AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name = [CURR_SELECT]);
+
+INSERT INTO BI_account_transactions (payee_account_id, payer_account_id, amount, transaction_date, transaction_type_id, memo, posting_date, isVoid)
+VALUES (SELECT id FROM BI_accounts WHERE 
+user_id = [USER_SELECT] AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name = [CURR_SELECT]),
+SELECT id FROM BI_accounts WHERE 
+user_id = [CURR_USER] AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name = [CURR_SELECT]), 
++[amount], CURRENT_TIMESTAMP, 2, [memo], CURRENT_TIMESTAMP, 0);
