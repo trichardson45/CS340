@@ -1,0 +1,25 @@
+form {
+    display: table;
+    border-style: solid;
+}
+
+label {
+    display: table-cell;
+    margin: 10px;
+}
+
+input {
+    display: table-cell;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin: 2px;
+}
+
+legend {
+    font-size: x-large;
+    font-style: oblique;
+}
+
+label {
+    font-weight: bold;
+}
