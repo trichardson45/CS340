@@ -74,6 +74,129 @@
                 </form>
             </div>
 
+            <div id = "makeADeposit">
+              <legend>Make a Deposit</legend>
+              <form>
+                <p>
+                <h4>Please select an account and enter the dollar amount you would like to deposit</h4>
+                <select>
+                  <option value="" disabled selected>Please select...</option>
+                  <option value="Checking">Checking</option>
+                  <option value="Savings">Savings</option>
+                </select>
+                <input type="number" step="0.01" name="depositAmt" id="depositAmt" value="depositAmt" required="true" placeholder="Deposit Amount">
+                <input type="submit" id="submitDepositAmt">
+                </p>
+              </form>
+            </div>
 
+            <div id = "makeAWithdrawl">
+              <legend>Make a Withdrawl</legend>
+              <form>
+                <p>
+                <h4>Please select an account and enter the dollar amount you would like to withdraw:</h4>
+                <select>
+                  <option value="" disabled selected>Please select...</option>
+                  <option value="Checking">Checking</option>
+                  <option value="Savings">Savings</option>
+                </select>
+                <input type="number" step="0.01" name="withdrawlAmt" id="withdrawlAmt" value="withdrawlAmt" required="true" placeholder="Withdrawl Amount">
+                <input type="submit" id="submitWithdrawlAmt">
+                </p>
+              </form>
+            </div>
+
+            <div id = "makeAPayment">
+              <legend>Make a Payment</legend>
+              <form>
+                <p>
+                <h4>Please select a payee and an account to pay from:</h4>
+                <table>
+                  <tr>
+                    <th>Make a Payment to:</th>
+                  </tr>
+                  <tr>
+                    <td>
+                      <select>
+                        <option value="" disabled selected>Please select...</option>
+                        <option value="Payee1">Payee 1</option>
+                        <option value="Payee2">Payee 2</option>
+                        <option value="Payee3">Payee 3</option>
+                        <option value="Payee4">Payee 4</option>
+                        <option value="Payee5">Payee 5</option>
+                      </select>
+                    </td>
+                  </tr>
+                </table>
+              </br>
+                <table>
+                  <tr>
+                    <th>Make a Payment from:</th>
+                  </tr>
+                  <tr>
+                    <td>
+                      <select>
+                        <option value="" disabled selected>Please select...</option>
+                        <option value="Checking">Checking</option>
+                        <option value="Savings">Savings</option>
+                      </select>
+                    </td>
+                  </tr>
+                </table>
+              </br>
+                <table>
+                  <tr>
+                    <td><input type="number" step="0.01" name="paymentAmt" id="paymentAmt" required="true" placeholder="Payment Amount"></td>
+                    <td><input type="submit" id="paymentSubmit"></td>
+                  </tr>
+                </table>
+                </p>
+              </form>
+            </div>
+
+            <div id = "makeATransfer">
+              <legend>Transfer Money</legend>
+              <form>
+                <p>
+                <h4>Please select an account to transfer to and from:</h4>
+                <table>
+                  <tr>
+                    <th>Transfer Money to:</th>
+                  </tr>
+                  <tr>
+                    <td>
+                      <select>
+                        <option value="" disabled selected>Please select...</option>
+                        <option value="Checking">Checking</option>
+                        <option value="Savings">Savings</option>
+                      </select>
+                    </td>
+                  </tr>
+                </table>
+              </br>
+                <table>
+                  <tr>
+                    <th>Transfer Money from:</th>
+                  </tr>
+                  <tr>
+                    <td>
+                      <select>
+                        <option value="" disabled selected>Please select...</option>
+                        <option value="Checking">Checking</option>
+                        <option value="Savings">Savings</option>
+                      </select>
+                    </td>
+                  </tr>
+                </table>
+              </br>
+                <table>
+                  <tr>
+                    <td><input type="number" step="0.01" name="paymentAmt" id="paymentAmt" required="true" placeholder="Transfer Amount"></td>
+                    <td><input type="submit" id="transferSubmit"></td>
+                  </tr>
+                </table>
+                </p>
+              </form>
+            </div>
 </body>
 </html>
