@@ -1,15 +1,13 @@
 form {
-    display: table;
     border-style: solid;
+    width: 510px;
 }
 
-label {
-    display: table-cell;
-    margin: 10px;
+.evenRow {
+    width: 241px;
 }
 
 input {
-    display: table-cell;
     margin-left: 10px;
     margin-right: 10px;
     margin: 2px;
@@ -22,4 +20,8 @@ legend {
 
 label {
     font-weight: bold;
+}
+
+#heading {
+    background-color: aqua;
 }

@@ -6,29 +6,82 @@
     <script type="text/javascript" src="main_page.js"></script>
 </head>
 <body>
-<h1>Richardson-Monroe Bank & Trust</h1>
-<div id="createUserForm">
-    <legend>Create a user here</legend>
-    <form>
-        <p>
-            <label for="firstName">First Name</label>
-            <input type="text" name="fname" id="firstName" onchange="onTextFieldChange()">
-            <label for="middleName">Middle Name</label>
-            <input type="text" name="mname" id="middleName" onchange="onTextFieldChange()">
-            <label for="lastName">Last Name</label>
-            <input type="text" name="lname" id="lastName" onchange="onTextFieldChange()">
-            <label for="email">e-Mail</label>
-            <input type="text" name="ename" id="email" onchange="onTextFieldChange()">
-            <label for="username">Username</label>
-            <input type="text" name="uname" id="username" onchange="onTextFieldChange()">
-            <label for="pw1">Password</label>
-            <input type="text" name="password1" id="pw1" onchange="onTextFieldChange()">
-            <label for="pw2">Verify Password</label>
-            <input type="text" name="password2" id="pw2" onchange="onTextFieldChange()">
-        </p>
-        <br>
-        <input type="submit" id="createUserSubmit">
-    </form>
-</div>
+<h1 id="heading">Richardson-Monroe Bank & Trust</h1>
+<table>
+    <tr>
+        <td>
+            <div id="createUserForm">
+                <legend>Create a user here</legend>
+                <form>
+                    <p>
+                    <table>
+                        <tr>
+                            <td><input type="text" name="fname" id="firstName" required="true" placeholder="First Name">
+                                <input type="text" name="mname" id="middleName" placeholder="Middle Name (Optional)">
+                                <input type="text" name="lname" id="lastName" required="true" placeholder="Last Name">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" name="ename" id="email" required="true" placeholder="e-mail"
+                                       class="evenRow">
+                                <input type="text" name="uname" id="username" required="true" placeholder="Username"
+                                       class="evenRow">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="password" name="password1" id="pw1" required="true" placeholder="Password"
+                                       class="evenRow">
+                                <input type="password" name="password2" id="pw2" required="true"
+                                       placeholder="Verify Password"
+                                       class="evenRow">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="submit" id="createUserSubmit">
+                            </td>
+                        </tr>
+                    </table>
+                    </p>
+                </form>
+            </div>
+
+            <div id="openAnAccount">
+                <legend>Open an Account</legend>
+                <form>
+                    <p>
+                    <h4>Which type of account would you like to open?</h4>
+                    Keep in mind you can only have 1 account of each type.<br>
+                    <input type="radio" name="accountType" id="Checking" value="Checking">Checking<br>
+                    <input type="radio" name="accountType" id="Savings" value="Savings">Savings<br>
+                    <input type="radio" name="accountType" id="Brokerage Account" value="Brokerage Account">Brokerage
+                    Account<br>
+                    <input type="radio" name="accountType" id="Mortgage" value="Mortgage">Mortgage<br>
+                    </p>
+                    <input type="submit" id="openAnAccountSubmit">
+                </form>
+            </div>
+        </td>
+
+    </tr>
+    <tr>
+        <td>
+            <div id="closeAnAccount">
+                <legend>Close an Account</legend>
+                <form>
+                    <p>
+                    <h4>Which type of account would you like to close?</h4>
+                    You may not close a mortgage with a remaining balance.<br>
+                    <input type="radio" name="accountType" id="dChecking" value="Checking">Checking<br>
+                    <input type="radio" name="accountType" id="dSavings" value="Savings">Savings<br>
+                    <input type="radio" name="accountType" id="dBrokerage Account" value="Brokerage Account">Brokerage
+                    Account<br>
+                    <input type="radio" name="accountType" id="dMortgage" value="Mortgage">Mortgage<br>
+                    </p>
+                    <input type="submit" id="closeAnAccountSubmit">
+                </form>
+            </div>
+        </td>
+    </tr>
+</table>
 </body>
 </html>
