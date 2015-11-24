@@ -45,13 +45,31 @@ week 7
 	start .css files as needed -- Matt 
 	outline -- Trent
 	Table creation queries -- Verified w/inserts
-	
-week 8 
-     ER diagram of Database -- matt
-     Database schema -- matt
-	 html -- trent 
+week 9  --DUE 12/6
+	Database schema -- matt
+	ER diagram of Database -- matt
+Connect to DB: using node
+--Dynamic tables 
+Make payment
+	Payment to: Constant, first 4 are matt,ezra,ellie,trent (checking), mortgage account
+	Payment from: add brokerage (verify fee logic)
+Transfer money: 
+	Transfer to & from brokerage
+Make a deposit/withdrawal
+	add brokerage
+Close an account:
+	disable buttons/make a drop down
+Open an account: 
+	change to drop down, deativate options that shouldnt be selected
+Login:
+	Create it
+Logout:
+	Create it
+database outline
+--Cheatsheet for grader:
+--	Add all account info for "test users"
+--	Name, account type, balance
+--Assess interest rate button:
+--	LAST THING TO DO, TRY TO SEPARATE
 
-week 9 
-	 database outline
-	 php
-	 style
+	style (optional)
