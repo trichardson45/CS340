@@ -69,22 +69,22 @@ app.get('/', function (req, res, next) {
                 next(err);
                 return;
             }
-           curId = rows[0].id;
+            curId = rows[0].id;
             var curUser = rows[0].username;
             var pw = req.query.passwordLogins;
-            var newquery5 = "select * from BI_password where `user_id`="+curId+" and `password` ='"+pw+"';";
+            var newquery5 = "select * from BI_password where `user_id`=" + curId + " and `password` ='" + pw + "';";
             mysql.pool.query(newquery5, function (err, rows) {
                 if (err) {
                     next(err);
                     return;
                 }
-                if (rows.length == 0){
+                if (rows.length == 0) {
                     context.error = "You have entered an incorrect user or password";
-                    res.render('error',context);
+                    res.render('error', context);
                 }
-                else
-                {      context.loggedInUser = curUser;
-                    res.render('main_page',context);
+                else {
+                    context.loggedInUser = curUser;
+                    res.render('main_page', context);
                 }
             })
         })
