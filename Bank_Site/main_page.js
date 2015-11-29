@@ -1,9 +1,12 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var mysql = require('./db_connection.js');
 
 var app = express();
 var handlebars = require('express-handlebars').create({defaultLayout: 'main'});
 
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.set('port', 3000);
@@ -67,7 +70,7 @@ app.get('/', function (req, res, next) {
                 return;
             }
            curId = rows[0].id;
-            console.log(curId);
+            var curUser = rows[0].username;
             var pw = req.query.passwordLogins;
             var newquery5 = "select * from BI_password where `user_id`="+curId+" and `password` ='"+pw+"';";
             mysql.pool.query(newquery5, function (err, rows) {
@@ -75,11 +78,14 @@ app.get('/', function (req, res, next) {
                     next(err);
                     return;
                 }
-                console.log(newquery5);
-                console.log(JSON.stringify(rows));
-                if (rows.length !=0)
-                res.render('main_page',context);
-                else res.render('home',context);
+                if (rows.length == 0){
+                    context.error = "You have entered an incorrect user or password";
+                    res.render('error',context);
+                }
+                else
+                {      context.loggedInUser = curUser;
+                    res.render('main_page',context);
+                }
             })
         })
 
