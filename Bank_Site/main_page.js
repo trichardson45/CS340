@@ -69,6 +69,8 @@ app.get('/', function (req, res, next) {
                 next(err);
                 return;
             }
+            console.log(rows);
+            console.log(newquery4);
             curId = rows[0].id;
             var curUser = rows[0].username;
             var pw = req.query.passwordLogins;
