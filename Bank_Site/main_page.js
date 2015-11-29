@@ -63,6 +63,7 @@ app.get('/', function (req, res, next) {
         })
         res.render('main_page', context);
     } else if (req.query.passwordLogins != null && req.query.usernameLogins != null && req.query.passwordLogins != '' && req.query.usernameLogins != '') {
+        currentUser = req.query.usernameLogins;
         var newquery4 = "select * from BI_user WHERE `username` ='" + currentUser + "' ;";
         mysql.pool.query(newquery4, function (err, rows) {
             if (err) {
