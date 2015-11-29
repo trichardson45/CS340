@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <link rel="stylesheet" href="Final_Project/main_page.css" type="text/css">
+    <script type="text/javascript" src="events.js"></script>
+</head>
+<body>
+<h1 id="heading">Richardson-Monroe Bank & Trust</h1>
+            <div id="loginForm">
+                <legend>Login Here</legend>
+                <form>
+                    <p>
+                    <table>
+                        <tr>
+                            <td><input type="text" name="usernameLogins" id="usernameLogin" required="true" placeholder="Username">
+                                <input type="password" name="passwordLogins" id="passwordLogin" placeholder="Password">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="submit" id="createUserSubmit">
+                            </td>
+                        </tr>
+                    </table>
+                    </p>
+                </form>
+            </div>
+            <div id="createUserForm">
+                <legend>Create a user here</legend>
+                <form>
+                    <p>
+                    <table>
+                        <tr>
+                            <td><input type="text" name="fname" id="firstName" required="true" placeholder="First Name">
+                                <input type="text" name="mname" id="middleName" placeholder="Middle Name (Optional)">
+                                <input type="text" name="lname" id="lastName" required="true" placeholder="Last Name">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" name="ename" id="email" required="true" placeholder="e-mail"
+                                       class="evenRow">
+                                <input type="text" name="uname" id="username" required="true" placeholder="Username"
+                                       class="evenRow">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="password" name="password1" id="pw1" required="true" placeholder="Password"
+                                       class="evenRow">
+                                <input type="password" name="password2" id="pw2" required="true"
+                                       placeholder="Verify Password"
+                                       class="evenRow">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="submit" id="createUserSubmit">
+                            </td>
+                        </tr>
+                    </table>
+                    </p>
+                </form>
+            </div>
+
+            <div id="openAnAccount">
+                <legend>Open an Account</legend>
+                <form>
+                    <p>
+                    <h4>Which type of account would you like to open?</h4>
+                    Keep in mind you can only have 1 account of each type.<br>
+                    <input type="radio" name="accountType" id="Checking" value="Checking">Checking<br>
+                    <input type="radio" name="accountType" id="Savings" value="Savings">Savings<br>
+                    <input type="radio" name="accountType" id="Brokerage Account" value="Brokerage Account">Brokerage
+                    Account<br>
+                    <input type="radio" name="accountType" id="Mortgage" value="Mortgage">Mortgage<br>
+                    </p>
+                    <input type="submit" id="openAnAccountSubmit">
+                </form>
+            </div>
+
+            <div id="closeAnAccount">
+                <legend>Close an Account</legend>
+                <form>
+                    <p>
+                    <h4>Which type of account would you like to close?</h4>
+                    You may not close a mortgage with a remaining balance.<br>
+                    <input type="radio" name="accountType" id="dChecking" value="Checking">Checking<br>
+                    <input type="radio" name="accountType" id="dSavings" value="Savings">Savings<br>
+                    <input type="radio" name="accountType" id="dBrokerage Account" value="Brokerage Account">Brokerage
+                    Account<br>
+                    <input type="radio" name="accountType" id="dMortgage" value="Mortgage">Mortgage<br>
+                    </p>
+                    <input type="submit" id="closeAnAccountSubmit">
+                </form>
+            </div>
+
+            <div id = "makeADeposit">
+              <legend>Make a Deposit</legend>
+              <form>
+                <p>
+                <h4>Please select an account and enter the dollar amount you would like to deposit</h4>
+                <select>
+                  <option value="" disabled selected>Please select...</option>
+                  <option value="Checking">Checking</option>
+                  <option value="Savings">Savings</option>
+                </select>
+                <input type="number" step="0.01" name="depositAmt" id="depositAmt" value="depositAmt" required="true" placeholder="Deposit Amount">
+                <input type="submit" id="submitDepositAmt">
+                </p>
+              </form>
+            </div>
+
+            <div id = "makeAWithdrawl">
+              <legend>Make a Withdrawl</legend>
+              <form>
+                <p>
+                <h4>Please select an account and enter the dollar amount you would like to withdraw:</h4>
+                <select>
+                  <option value="" disabled selected>Please select...</option>
+                  <option value="Checking">Checking</option>
+                  <option value="Savings">Savings</option>
+                </select>
+                <input type="number" step="0.01" name="withdrawlAmt" id="withdrawlAmt" value="withdrawlAmt" required="true" placeholder="Withdrawl Amount">
+                <input type="submit" id="submitWithdrawlAmt">
+                </p>
+              </form>
+            </div>
+
+            <div id = "makeAPayment">
+              <legend>Make a Payment</legend>
+              <form>
+                <p>
+                <h4>Please select a payee and an account to pay from:</h4>
+                <table>
+                  <tr>
+                    <th>Make a Payment to:</th>
+                  </tr>
+                  <tr>
+                    <td>
+                      <select>
+                        <option value="" disabled selected>Please select...</option>
+                        <option value="Payee1">Payee 1</option>
+                        <option value="Payee2">Payee 2</option>
+                        <option value="Payee3">Payee 3</option>
+                        <option value="Payee4">Payee 4</option>
+                        <option value="Payee5">Payee 5</option>
+                      </select>
+                    </td>
+                  </tr>
+                </table>
+              </br>
+                <table>
+                  <tr>
+                    <th>Make a Payment from:</th>
+                  </tr>
+                  <tr>
+                    <td>
+                      <select>
+                        <option value="" disabled selected>Please select...</option>
+                        <option value="Checking">Checking</option>
+                        <option value="Savings">Savings</option>
+                      </select>
+                    </td>
+                  </tr>
+                </table>
+              </br>
+                <table>
+                  <tr>
+                    <td><input type="number" step="0.01" name="paymentAmt" id="paymentAmt" required="true" placeholder="Payment Amount"></td>
+                    <td><input type="submit" id="paymentSubmit"></td>
+                  </tr>
+                </table>
+                </p>
+              </form>
+            </div>
+
+            <div id = "makeATransfer">
+              <legend>Transfer Money</legend>
+              <form>
+                <p>
+                <h4>Please select an account to transfer to and from:</h4>
+                <table>
+                  <tr>
+                    <th>Transfer Money to:</th>
+                  </tr>
+                  <tr>
+                    <td>
+                      <select>
+                        <option value="" disabled selected>Please select...</option>
+                        <option value="Checking">Checking</option>
+                        <option value="Savings">Savings</option>
+                      </select>
+                    </td>
+                  </tr>
+                </table>
+              </br>
+                <table>
+                  <tr>
+                    <th>Transfer Money from:</th>
+                  </tr>
+                  <tr>
+                    <td>
+                      <select>
+                        <option value="" disabled selected>Please select...</option>
+                        <option value="Checking">Checking</option>
+                        <option value="Savings">Savings</option>
+                      </select>
+                    </td>
+                  </tr>
+                </table>
+              </br>
+                <table>
+                  <tr>
+                    <td><input type="number" step="0.01" name="paymentAmt" id="paymentAmt" required="true" placeholder="Transfer Amount"></td>
+                    <td><input type="submit" id="transferSubmit"></td>
+                  </tr>
+                </table>
+                </p>
+              </form>
+            </div>
+			
+</body>
+</html>

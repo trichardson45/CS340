@@ -1,0 +1,52 @@
+form {
+     border-style: solid;
+    width: 510px;
+}
+div {
+    position: absolute;
+}
+.evenRow {
+    width: 241px;
+}
+#openAnAccount {
+    left: 530px;
+}
+#closeAnAccount{
+    top: 311px;
+    background-color: lawngreen;
+}
+input {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin: 2px;
+}
+legend {
+    font-size: x-large;
+    font-style: oblique;
+}
+label {
+    font-weight: bold;
+}
+#heading {
+    background-color: aqua;
+}
+#makeADeposit {
+    top: 540px;
+}
+#makeAWithdrawl {
+  top: 540px;
+  left: 530px;
+}
+#makeAPayment {
+  top: 700px;
+}
+#makeATransfer {
+  top:700px;
+  left: 530px;
+}
+th {
+  text-align: left;
+}
+h4 {
+  padding-left: 5px;
+}
