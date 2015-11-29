@@ -91,15 +91,15 @@ app.get('/', function (req, res, next) {
 
     } else if (req.query.depositAmt != 0 && req.query.depositAmt != '' && req.query.depositAmt != null) {
       var newquery6 = "UPDATE BI_accounts SET `current_balance` = `current_balance`+" + String(req.query.depositAmt) + " WHERE `user_id` =" + curId + " AND `account_type_id`=";
-      newquery6 += "(SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.accountType + "')";
+      newquery6 += "(SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.dep_account_type + "')";
       console.log(newquery6);
-      /*mysql.pool.query(newquery6, function (err, rows){
+      mysql.pool.query(newquery6, function (err, rows){
         if (err) {
           next(err);
           return;
         }
 
-      })*/
+      })
       res.render('main_page', context);
     }
     else  mysql.pool.query('SELECT * FROM BI_accounts', function (err, rows, fields) {
