@@ -95,10 +95,10 @@
               <form>
                 <p>
                 <h4>Please select an account and enter the dollar amount you would like to deposit</h4>
-                <select>
+                <select id="accountType">
                   <option value="" disabled selected>Please select...</option>
-                  <option value="Checking" name="accountType" id="Checking">Checking</option>
-                  <option value="Savings" name="accountType" id="Savings">Savings</option>
+                  <option value="Checking">Checking</option>
+                  <option value="Savings">Savings</option>
                 </select>
                 <input type="number" step="0.01" name="depositAmt" id="depositAmt" value="depositAmt" required="true" placeholder="Deposit Amount">
                 <input type="submit" id="submitDepositAmt">
