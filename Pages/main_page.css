@@ -8,12 +8,15 @@ div {
 .evenRow {
     width: 241px;
 }
+#createUserForm {
+  left: 530px;
+}
 #openAnAccount {
-    left: 530px;
+    top: 311px;
 }
 #closeAnAccount{
     top: 311px;
-    background-color: lawngreen;
+    left: 530px;
 }
 input {
     margin-left: 10px;
