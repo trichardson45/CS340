@@ -113,10 +113,10 @@ app.get('/', function (req, res, next) {
       })
       res.render('main_page', context);
     } else if (req.query.withdrawlAmt != 0 && req.query.withdrawlAmt != '' && req.query.withdrawlAmt != null) {
-      var newquery6 = "UPDATE BI_accounts SET `current_balance` = `current_balance` - " + String(req.query.withdrawlAmt) + " WHERE `user_id` =" + curId + " AND `account_type_id`=";
-      newquery6 += "(SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.with_account_type + "')";
+      var newquery7 = "UPDATE BI_accounts SET `current_balance` = `current_balance` - " + String(req.query.withdrawlAmt) + " WHERE `user_id` =" + curId + " AND `account_type_id`=";
+      newquery7 += "(SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.with_account_type + "')";
       console.log(newquery6);
-      mysql.pool.query(newquery6, function (err, rows){
+      mysql.pool.query(newquery7, function (err, rows){
         if (err) {
           next(err);
           return;
@@ -132,7 +132,6 @@ app.get('/', function (req, res, next) {
 
       })
       res.render('main_page', context);
-      
     } else  mysql.pool.query('SELECT * FROM BI_accounts', function (err, rows, fields) {
             if (err) {
                 next(err);
