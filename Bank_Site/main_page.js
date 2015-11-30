@@ -113,7 +113,7 @@ app.get('/', function (req, res, next) {
                 }
             })
         })
-        //res.render('main_page', context);
+        res.render('main_page', context);
 
     } else if (req.query.withdrawlAmt != 0 && req.query.withdrawlAmt != '' && req.query.withdrawlAmt != null) {
         var newquery8 = "UPDATE BI_accounts SET `current_balance` = `current_balance` - " + String(req.query.withdrawlAmt) + " WHERE `user_id` =" + curId + " AND `account_type_id`=";
@@ -136,7 +136,7 @@ app.get('/', function (req, res, next) {
                 next(err);
                 return;
             }
-            //res.render('main_page', context);
+          res.render('main_page', context);
          })
     } else  mysql.pool.query('SELECT * FROM BI_accounts', function (err, rows, fields) {
         if (err) {
