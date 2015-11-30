@@ -106,6 +106,12 @@ app.get('/', function (req, res, next) {
       newquery7 += " SELECT `id` FROM BI_accounts WHERE `user_id` =" + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name`'" + req.query.dep_account_type + "'),";
       newquery7 += " +" + String(req.query.depositAmt) + ", CURRENT_TIMESTAMP, 1," + String("DEPOSIT") +", CURRENT_TIMESTAMP, 0)";
       })
+      console.log(newquery7);
+      mysql.pool.query(newquery7, function (err, rows){
+        if (err) {
+          next(err);
+          return;
+      })
       res.render('main_page', context);
 
     } else if (req.query.withdrawlAmt != 0 && req.query.withdrawlAmt != '' && req.query.withdrawlAmt != null) {
