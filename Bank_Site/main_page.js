@@ -111,7 +111,7 @@ app.get('/', function (req, res, next) {
         if (err) {
           next(err);
           return;
-      })
+        }
       res.render('main_page', context);
 
     } else if (req.query.withdrawlAmt != 0 && req.query.withdrawlAmt != '' && req.query.withdrawlAmt != null) {
