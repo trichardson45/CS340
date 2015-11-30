@@ -101,16 +101,6 @@ app.get('/', function (req, res, next) {
           next(err);
           return;
         }
-        if (rows.length == 0) {
-            context.error = "You don't have that type of account!";
-            res.render('error', context);
-        }
-        else {
-            var curUser = rows[0].username;
-            context.loggedInUser = curUser;
-            res.render('main_page', context);
-        }
-
       })
       res.render('main_page', context);
     } else if (req.query.withdrawlAmt != 0 && req.query.withdrawlAmt != '' && req.query.withdrawlAmt != null) {
@@ -122,16 +112,6 @@ app.get('/', function (req, res, next) {
           next(err);
           return;
         }
-        if (rows.length == 0) {
-            context.error = "You don't have that type of account!";
-            res.render('error', context);
-        }
-        else {
-            var curUser = rows[0].username;
-            context.loggedInUser = curUser;
-            res.render('main_page', context);
-        }
-
       })
       res.render('main_page', context);
     } else  mysql.pool.query('SELECT * FROM BI_accounts', function (err, rows, fields) {
