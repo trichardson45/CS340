@@ -115,7 +115,7 @@ app.get('/', function (req, res, next) {
     } else if (req.query.withdrawlAmt != 0 && req.query.withdrawlAmt != '' && req.query.withdrawlAmt != null) {
       var newquery7 = "UPDATE BI_accounts SET `current_balance` = `current_balance` - " + String(req.query.withdrawlAmt) + " WHERE `user_id` =" + curId + " AND `account_type_id`=";
       newquery7 += "(SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.with_account_type + "')";
-      console.log(newquery6);
+      console.log(newquery7);
       mysql.pool.query(newquery7, function (err, rows){
         if (err) {
           next(err);
