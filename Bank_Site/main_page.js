@@ -106,6 +106,7 @@ app.get('/', function (req, res, next) {
             res.render('error', context);
         }
         else {
+            var curUser = rows[0].username;
             context.loggedInUser = curUser;
             res.render('main_page', context);
         }
@@ -126,6 +127,7 @@ app.get('/', function (req, res, next) {
             res.render('error', context);
         }
         else {
+            var curUser = rows[0].username;
             context.loggedInUser = curUser;
             res.render('main_page', context);
         }
