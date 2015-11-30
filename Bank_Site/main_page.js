@@ -136,8 +136,9 @@ app.get('/', function (req, res, next) {
                 next(err);
                 return;
             }
-          res.render('main_page', context);
          })
+         res.render('main_page', context);
+
     } else  mysql.pool.query('SELECT * FROM BI_accounts', function (err, rows, fields) {
         if (err) {
             next(err);
