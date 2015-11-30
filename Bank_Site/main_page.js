@@ -124,7 +124,6 @@ app.get('/', function (req, res, next) {
                 next(err);
                 return;
             }
-            //res.render('main_page', context);
         })
         var newquery9 = "INSERT INTO BI_account_transactions (`payee_account_id`, `payer_account_id`, `amount`, `transaction_date`, `transaction_type_id`, `memo`, `posting_date`, `isVoid`)";
         newquery9 += " VALUES ((SELECT `id` FROM BI_accounts WHERE `user_id` =" + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.with_account_type + "')),";
@@ -135,7 +134,7 @@ app.get('/', function (req, res, next) {
             if (err) {
                 next(err);
                 return;
-            }
+            })
          })
          res.render('main_page', context);
 
