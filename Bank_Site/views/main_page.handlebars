@@ -111,10 +111,10 @@
               <form>
                 <p>
                 <h4>Please select an account and enter the dollar amount you would like to withdraw:</h4>
-                <select>
+                <select name="with_account_type">
                   <option value="" disabled selected>Please select...</option>
-                  <option value="Checking" name="accountType" id="Checking">Checking</option>
-                  <option value="Savings" name="accountType" id="Savings">Savings</option>
+                  <option value="Checking">Checking</option>
+                  <option value="Savings">Savings</option>
                 </select>
                 <input type="number" step="0.01" name="withdrawlAmt" id="withdrawlAmt" value="withdrawlAmt" required="true" placeholder="Withdrawl Amount">
                 <input type="submit" id="submitWithdrawlAmt">
