@@ -69,16 +69,20 @@ CREATE TABLE `BI_transaction_types`
 CREATE TABLE `BI_account_transactions`
 (
   id INT(11) NOT NULL AUTO_INCREMENT,
-  payee_account_id INT(11) NOT NULL,
-  payer_account_id INT(11) NOT NULL,
-  amount DECIMAL(10,2) NOT NULL,
-  transaction_date DATE NOT NULL,
-  transaction_type_id INT(11) NOT NULL,
-  memo TEXT,
-  posting_date DATE NOT NULL,
-  isVoid TINYINT(1) NOT NULL,
+  `payee_name` VARCHAR(24) NOT NULL,
+  `payee_account_id` INT(11) NOT NULL,
+  `payer_name` VARCHAR(24) NOT NULL,
+  `payer_account_id` INT(11) NOT NULL,
+  `amount` DECIMAL(10,2) NOT NULL,
+  `transaction_date` DATE NOT NULL,
+  `transaction_type_id` INT(11) NOT NULL,
+  `memo` TEXT,
+  `posting_date` DATE NOT NULL,
+  `isVoid` TINYINT(1) NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (payee_account_id) REFERENCES BI_accounts (id),
-  FOREIGN KEY (payer_account_id) REFERENCES BI_accounts (id),
-  FOREIGN KEY (transaction_type_id) REFERENCES BI_transaction_types (id)
+  FOREIGN KEY (payee_name) REFERENCES BI_user (`username`),
+  FOREIGN KEY (payee_account_id) REFERENCES BI_accounts (`id`),
+  FOREIGN KEY (payer_name) REFERENCES BI_user (`username`),
+  FOREIGN KEY (payer_account_id) REFERENCES BI_accounts (`id`),
+  FOREIGN KEY (transaction_type_id) REFERENCES BI_transaction_types (`id`)
 )ENGINE = InnoDB;
