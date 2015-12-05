@@ -55,6 +55,7 @@ CREATE TABLE `BI_accounts` (
   `current_balance` DECIMAL(10,2),
   `last_transaction_date` DATE NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY (`user_id`,`account_type_id`),
   FOREIGN KEY (`user_id`) REFERENCES BI_user (`id`),
   FOREIGN KEY (`account_type_id`) REFERENCES BI_account_types (`id`)
 )ENGINE = InnoDB; 
