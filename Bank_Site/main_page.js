@@ -47,7 +47,8 @@ app.get('/', function (req, res, next) {
                         return;
                     }
                 })
-                res.render('main_page', context);
+                context.loggedInUser = currentUser;
+					res.render('main_page', context);
             });
         }
     } else if (req.query.accountType != null && req.query.accountType != '') {
@@ -61,7 +62,35 @@ app.get('/', function (req, res, next) {
                 return;
             }
         })
-        res.render('main_page', context);
+        if (rows === undefined) {
+            context.error = "You already have that type of account";
+            res.render('error', context);
+        }
+        else {
+            console.log(rows);
+            context.loggedInUser = currentUser;
+            res.render('main_page', context);
+        }
+    }else if (req.query.closeAccountType != null && req.query.closeAccountType != '') {
+        var newquery4 = "DELETE FROM BI_accounts WHERE user_id = (SELECT id FROM BI_user WHERE username = ";
+        newquery4 += "'"+String(currentUser)+"') AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name ";
+        newquery4 += "= '"+req.query.closeAccountType+"');";
+
+        console.log(newquery4);
+        mysql.pool.query(newquery4, function (err) {
+            if (err) {
+                next(err);
+                return;
+            }
+        })
+        if (rows.length == 0) {
+            context.error = "That entry is invalid";
+            res.render('error', context);
+        }
+        else {
+            context.loggedInUser = currentUser;
+            res.render('main_page', context);
+        }
     } else if (req.query.passwordLogins != null && req.query.usernameLogins != null && req.query.passwordLogins != '' && req.query.usernameLogins != '') {
         currentUser = req.query.usernameLogins;
         var newquery4 = "select * from BI_user WHERE `username` ='" + currentUser + "' ;";
@@ -73,7 +102,7 @@ app.get('/', function (req, res, next) {
             console.log(rows);
             console.log(newquery4);
             curId = rows[0].id;
-            var curUser = rows[0].username;
+            currentUser = rows[0].username;
             var pw = req.query.passwordLogins;
             var newquery5 = "select * from BI_password where `user_id`=" + curId + " and `password` ='" + pw + "';";
             mysql.pool.query(newquery5, function (err, rows) {
@@ -82,11 +111,12 @@ app.get('/', function (req, res, next) {
                     return;
                 }
                 if (rows.length == 0) {
+                    currentUser ='';
                     context.error = "You have entered an incorrect user or password";
                     res.render('error', context);
                 }
                 else {
-                    context.loggedInUser = curUser;
+                    context.loggedInUser = currentUser;
                     res.render('main_page', context);
                 }
             })
@@ -113,9 +143,23 @@ app.get('/', function (req, res, next) {
                     next(err);
                     return;
                 }
-            })
+                if (rows.length == 0) {
+                    context.error = "You do not have that type of account";
+                    res.render('error', context);
+                }
+                else {
+                    context.loggedInUser = currentUser;
+                    res.render('main_page', context);
+            }})
         })
-        res.render('main_page', context);
+        /*if (rows.length == 0) {
+            context.error = "You do not have that type of account";
+            res.render('error', context);
+        }
+        else {
+            context.loggedInUser = currentUser;
+            res.render('main_page', context);
+        }*/
 
     } else if (req.query.withdrawlAmt != 0 && req.query.withdrawlAmt != '' && req.query.withdrawlAmt != null) {
         var newquery8 = "UPDATE BI_accounts SET `current_balance` = `current_balance` - " + String(req.query.withdrawlAmt) + " WHERE `user_id` =" + curId + " AND `account_type_id`=";
@@ -140,7 +184,14 @@ app.get('/', function (req, res, next) {
             }
         })
     })
-    res.render('main_page', context);
+        if (rows.length == 0) {
+            context.error = "You do not have that type of account";
+            res.render('error', context);
+        }
+        else {
+            context.loggedInUser = currentUser;
+            res.render('main_page', context);
+        }
 
   } else if (req.query.paymentAmt != 0 && req.query.paymentAmt != '' && req.query.paymentAmt != null) {
         var newquery10 = "UPDATE BI_accounts SET `current_balance` = `current_balance` - " + String(req.query.paymentAmt) + " WHERE `user_id` =" + curId + " AND `account_type_id`=";
@@ -187,7 +238,14 @@ app.get('/', function (req, res, next) {
             }
        })
     })
-    res.render('main_page', context);
+        if (rows.length == 0) {
+            context.error = "You do not have that type of account";
+            res.render('error', context);
+        }
+        else {
+            context.loggedInUser = currentUser;
+            res.render('main_page', context);
+        }
 
   } else if (req.query.transferAmt != 0 && req.query.transferAmt != '' && req.query.transferAmt != null) {
         var newquery14 = "UPDATE BI_accounts SET `current_balance` = `current_balance` - " + String(req.query.transferAmt) + " WHERE `user_id` =" + curId + " AND `account_type_id`=";
@@ -234,15 +292,23 @@ app.get('/', function (req, res, next) {
             }
        })
     })
-    res.render('main_page', context);
+        if (rows.length == 0) {
+            context.error = "You do not have that type of account";
+            res.render('error', context);
+        }
+        else {
+            context.loggedInUser = currentUser;
+            res.render('main_page', context);
+        }
 
     } else mysql.pool.query('SELECT * FROM BI_accounts', function (err, rows, fields) {
         if (err) {
             next(err);
             return;
         }
-        context.results = JSON.stringify(rows);
-        res.render('main_page', context);
+
+        context.loggedInUser = currentUser;
+					res.render('main_page', context);
     });
 });
 
