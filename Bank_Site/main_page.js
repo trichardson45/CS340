@@ -143,16 +143,23 @@ app.get('/', function (req, res, next) {
                     next(err);
                     return;
                 }
+                if (rows.length == 0) {
+                    context.error = "You do not have that type of account";
+                    res.render('error', context);
+                }
+                else {
+                    context.loggedInUser = currentUser;
+                    res.render('main_page', context);
             })
         })
-        if (rows.length == 0) {
+        /*if (rows.length == 0) {
             context.error = "You do not have that type of account";
             res.render('error', context);
         }
         else {
             context.loggedInUser = currentUser;
             res.render('main_page', context);
-        }
+        }*/
 
     } else if (req.query.withdrawlAmt != 0 && req.query.withdrawlAmt != '' && req.query.withdrawlAmt != null) {
         var newquery8 = "UPDATE BI_accounts SET `current_balance` = `current_balance` - " + String(req.query.withdrawlAmt) + " WHERE `user_id` =" + curId + " AND `account_type_id`=";
