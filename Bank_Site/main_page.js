@@ -16,6 +16,8 @@ app.use(express.static('public')); //css styling of the page
 var currentUser = '';
 var curId = 0;
 var curPW = '';
+var actId = '';
+
 app.get('/', function (req, res, next) {
     var context = {};
     //var params = [];
@@ -59,6 +61,7 @@ app.get('/', function (req, res, next) {
         mysql.pool.query(newquery3, function (err, rows) {
             if (err) {
                 next(err);
+                return;
             }
             context.loggedInUser = currentUser;
             res.render('main_page', context);
@@ -119,15 +122,21 @@ app.get('/', function (req, res, next) {
         })
 
     } else if (req.query.depositAmt != 0 && req.query.depositAmt != '' && req.query.depositAmt != null) {
-        var errorcheck = "SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.dep_account_type + "';";
-        mysql.pool.query(errorcheck, function (err, rows) {
+        var errorCheck = "SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.dep_account_type + "';";
+        console.log(errorCheck);
+        mysql.pool.query(errorCheck, function (err, rows) {
             if (err) {
                 next(err);
                 return;
             }
-            var actId = rows.id;
+            if (rows != [] && rows.length != 0) {
+                console.log("rows: " + String(rows[0].id));
+                actId = rows[0].id;
+                console.log("account id: " + String(actId));
+            }
+
             var newquery6 = "UPDATE BI_accounts SET `current_balance` = `current_balance` + " + String(req.query.depositAmt) + " WHERE `user_id` =" + curId + " AND `account_type_id`=";
-            newquery6 += String(actId)+";";
+            newquery6 += String(actId) + ";";
             console.log(newquery6);
             mysql.pool.query(newquery6, function (err, rows) {
                 if (err) {

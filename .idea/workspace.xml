@@ -30,11 +30,33 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="main_page.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main_page.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Bank_Site/main_page.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.67650396">
-              <caret line="89" column="35" selection-start-line="89" selection-start-column="35" selection-end-line="89" selection-end-column="35" />
+            <state vertical-scroll-proportion="-17.48276">
+              <caret line="66" column="23" selection-start-line="66" selection-start-column="23" selection-end-line="66" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main_page.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Pages/main_page.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.09615385">
+              <caret line="23" column="33" selection-start-line="0" selection-start-column="0" selection-end-line="233" selection-end-column="0" />
+              <folding>
+                <element signature="n#style#0;n#span#0;n#h1#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main_page.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Bank_Site/public/css/main_page.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -64,12 +86,13 @@
         <option value="$PROJECT_DIR$/Pages/phptest.php" />
         <option value="$PROJECT_DIR$/Tables/table_creation_queries.sql" />
         <option value="$PROJECT_DIR$/Queries/create_an_account.sql" />
-        <option value="$PROJECT_DIR$/Pages/main_page.html" />
         <option value="$PROJECT_DIR$/Pages/main_page.css" />
         <option value="$PROJECT_DIR$/Pages/events.js" />
         <option value="$PROJECT_DIR$/Pages/main_page.js" />
         <option value="$PROJECT_DIR$/main_page.js" />
         <option value="$PROJECT_DIR$/Bank_Site/main_page.js" />
+        <option value="$PROJECT_DIR$/Pages/main_page.html" />
+        <option value="$PROJECT_DIR$/Bank_Site/public/css/main_page.css" />
       </list>
     </option>
   </component>
@@ -455,18 +478,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Pages/main_page.html">
+    <entry file="file://$PROJECT_DIR$/Bank_Site/main_page.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="29" column="22" selection-start-line="29" selection-start-column="22" selection-end-line="29" selection-end-column="22" />
+        <state vertical-scroll-proportion="-17.48276">
+          <caret line="66" column="23" selection-start-line="66" selection-start-column="23" selection-end-line="66" selection-end-column="23" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Bank_Site/main_page.js">
+    <entry file="file://$PROJECT_DIR$/Bank_Site/public/css/main_page.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.67650396">
-          <caret line="89" column="35" selection-start-line="89" selection-start-column="35" selection-end-line="89" selection-end-column="35" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Pages/main_page.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.09615385">
+          <caret line="23" column="33" selection-start-line="0" selection-start-column="0" selection-end-line="233" selection-end-column="0" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#h1#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
