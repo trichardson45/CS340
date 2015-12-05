@@ -150,7 +150,7 @@ app.get('/', function (req, res, next) {
                 else {
                     context.loggedInUser = currentUser;
                     res.render('main_page', context);
-            })
+            }})
         })
         /*if (rows.length == 0) {
             context.error = "You do not have that type of account";
