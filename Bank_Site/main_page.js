@@ -145,6 +145,7 @@ app.get('/', function (req, res, next) {
                         context.error = "You do not have that type of account";
                         res.render('error', context);
                     }
+                    return;
                     //return;
                 }
                 /*if (rows.length == 0) {
