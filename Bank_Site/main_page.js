@@ -140,22 +140,10 @@ app.get('/', function (req, res, next) {
             console.log(newquery7);
             mysql.pool.query(newquery7, function (err, rows) {
                 if (err) {
-                    //next(err);
-                    if (rows.length == 0) {
-                        context.error = "You do not have that type of account";
-                        res.render('error', context);
-                    }
+                    next(err);
                     return;
-                    //return;
                 }
-                /*if (rows.length == 0) {
-                    context.error = "You do not have that type of account";
-                    res.render('error', context);
-                }*/
-                else {
-                    context.loggedInUser = currentUser;
-                    res.render('main_page', context);
-            }})
+          })
         })
         /*if (rows.length == 0) {
             context.error = "You do not have that type of account";
@@ -325,7 +313,7 @@ app.use(function (req, res) {
 app.use(function (err, req, res, next) {
     console.error(err.stack);
     res.status(500);
-    res.render('500');
+    res.render('error');
 });
 
 app.listen(app.get('port'), function () {
