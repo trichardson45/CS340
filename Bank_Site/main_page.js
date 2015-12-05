@@ -48,7 +48,7 @@ app.get('/', function (req, res, next) {
                     }
                 })
                 context.loggedInUser = currentUser;
-					res.render('main_page', context);
+                res.render('main_page', context);
             });
         }
     } else if (req.query.accountType != null && req.query.accountType != '') {
@@ -56,41 +56,37 @@ app.get('/', function (req, res, next) {
         newquery3 += "VALUES ((SELECT `id` FROM `BI_user` WHERE `username` = '" + currentUser + "'),";
         newquery3 += "(SELECT `id` FROM `BI_account_types` WHERE `type_name` = '" + req.query.accountType + "'),1,0,CURRENT_TIMESTAMP);";
         console.log(newquery3);
-        mysql.pool.query(newquery3, function (err) {
+        mysql.pool.query(newquery3, function (err, rows) {
             if (err) {
                 next(err);
-                return;
             }
-        })
-        if (rows === undefined) {
-            context.error = "You already have that type of account";
-            res.render('error', context);
-        }
-        else {
-            console.log(rows);
             context.loggedInUser = currentUser;
             res.render('main_page', context);
-        }
-    }else if (req.query.closeAccountType != null && req.query.closeAccountType != '') {
+
+        })
+        /*{ [Error: ER_DUP_ENTRY: Duplicate entry '1-1' for key 'user_id'] code: 'ER_DUP_ENTRY', errno: 1062, sqlState: '23000', index: 0 }
+         */
+    } else if (req.query.closeAccountType != null && req.query.closeAccountType != '') {
         var newquery4 = "DELETE FROM BI_accounts WHERE user_id = (SELECT id FROM BI_user WHERE username = ";
-        newquery4 += "'"+String(currentUser)+"') AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name ";
-        newquery4 += "= '"+req.query.closeAccountType+"');";
+        newquery4 += "'" + String(currentUser) + "') AND account_type_id = (SELECT id FROM BI_account_types WHERE type_name ";
+        newquery4 += "= '" + req.query.closeAccountType + "');";
 
         console.log(newquery4);
-        mysql.pool.query(newquery4, function (err) {
+        mysql.pool.query(newquery4, function (err, rows) {
             if (err) {
                 next(err);
                 return;
             }
+            if (rows.length == 0) {
+                context.error = "That entry is invalid";
+                res.render('error', context);
+            }
+            else {
+                context.loggedInUser = currentUser;
+                res.render('main_page', context);
+            }
         })
-        if (rows.length == 0) {
-            context.error = "That entry is invalid";
-            res.render('error', context);
-        }
-        else {
-            context.loggedInUser = currentUser;
-            res.render('main_page', context);
-        }
+
     } else if (req.query.passwordLogins != null && req.query.usernameLogins != null && req.query.passwordLogins != '' && req.query.usernameLogins != '') {
         currentUser = req.query.usernameLogins;
         var newquery4 = "select * from BI_user WHERE `username` ='" + currentUser + "' ;";
@@ -99,10 +95,10 @@ app.get('/', function (req, res, next) {
                 next(err);
                 return;
             }
-            console.log(rows);
-            console.log(newquery4);
-            curId = rows[0].id;
-            currentUser = rows[0].username;
+            if (rows != [] && rows != 0 && rows.length != 0) {
+                curId = rows[0].id;
+                currentUser = rows[0].username;
+            }
             var pw = req.query.passwordLogins;
             var newquery5 = "select * from BI_password where `user_id`=" + curId + " and `password` ='" + pw + "';";
             mysql.pool.query(newquery5, function (err, rows) {
@@ -111,7 +107,7 @@ app.get('/', function (req, res, next) {
                     return;
                 }
                 if (rows.length == 0) {
-                    currentUser ='';
+                    currentUser = '';
                     context.error = "You have entered an incorrect user or password";
                     res.render('error', context);
                 }
@@ -123,36 +119,40 @@ app.get('/', function (req, res, next) {
         })
 
     } else if (req.query.depositAmt != 0 && req.query.depositAmt != '' && req.query.depositAmt != null) {
-        var newquery6 = "UPDATE BI_accounts SET `current_balance` = `current_balance` + " + String(req.query.depositAmt) + " WHERE `user_id` =" + curId + " AND `account_type_id`=";
-        newquery6 += "(SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.dep_account_type + "');";
-        console.log(newquery6);
-        mysql.pool.query(newquery6, function (err, rows) {
+        var errorcheck = "SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.dep_account_type + "';";
+        mysql.pool.query(errorcheck, function (err, rows) {
             if (err) {
                 next(err);
                 return;
             }
-            var newquery7 = "INSERT INTO BI_account_transactions (`payee_account_id`, `payee_name`, `payer_account_id`, `payer_name`, `amount`, `transaction_date`, `transaction_type_id`, `memo`, `posting_date`, `isVoid`)";
-            newquery7 += " VALUES ((SELECT `id` FROM BI_accounts WHERE `user_id` =" + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.dep_account_type + "')),";
-            newquery7 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
-            newquery7 += " (SELECT `id` FROM BI_accounts WHERE `user_id` = " + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.dep_account_type + "')),";
-            newquery7 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
-            newquery7 += " " + String(req.query.depositAmt) + ", CURRENT_TIMESTAMP, 1, 'DEPOSIT', CURRENT_TIMESTAMP, 0);";
-            console.log(newquery7);
-            mysql.pool.query(newquery7, function (err, rows) {
+            var actId = rows.id;
+            var newquery6 = "UPDATE BI_accounts SET `current_balance` = `current_balance` + " + String(req.query.depositAmt) + " WHERE `user_id` =" + curId + " AND `account_type_id`=";
+            newquery6 += String(actId)+";";
+            console.log(newquery6);
+            mysql.pool.query(newquery6, function (err, rows) {
                 if (err) {
                     next(err);
                     return;
                 }
-          })
+                var newquery7 = "INSERT INTO BI_account_transactions (`payee_account_id`, `payee_name`, `payer_account_id`, `payer_name`, `amount`, `transaction_date`, `transaction_type_id`, `memo`, `posting_date`, `isVoid`)";
+                newquery7 += " VALUES ((SELECT `id` FROM BI_accounts WHERE `user_id` =" + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.dep_account_type + "')),";
+                newquery7 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
+                newquery7 += " (SELECT `id` FROM BI_accounts WHERE `user_id` = " + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.dep_account_type + "')),";
+                newquery7 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
+                newquery7 += " " + String(req.query.depositAmt) + ", CURRENT_TIMESTAMP, 1, 'DEPOSIT', CURRENT_TIMESTAMP, 0);";
+                console.log(newquery7);
+                mysql.pool.query(newquery7, function (err, rows) {
+                    if (err) {
+                        next(err);
+                        return;
+                    }
+                    context.loggedInUser = currentUser;
+                    res.render('main_page', context);
+                })
+            })
+
         })
-        /*if (rows.length == 0) {
-            context.error = "You do not have that type of account";
-            res.render('error', context);
-        }
-        else {
-            context.loggedInUser = currentUser;
-            res.render('main_page', context);
-        }*/
+
 
     } else if (req.query.withdrawlAmt != 0 && req.query.withdrawlAmt != '' && req.query.withdrawlAmt != null) {
         var newquery8 = "UPDATE BI_accounts SET `current_balance` = `current_balance` - " + String(req.query.withdrawlAmt) + " WHERE `user_id` =" + curId + " AND `account_type_id`=";
@@ -162,21 +162,21 @@ app.get('/', function (req, res, next) {
             if (err) {
                 next(err);
                 return;
-        }
-        var newquery9 = "INSERT INTO BI_account_transactions (`payee_account_id`, `payee_name`, `payer_account_id`, `payer_name`, `amount`, `transaction_date`, `transaction_type_id`, `memo`, `posting_date`, `isVoid`)";
-        newquery9 += " VALUES ((SELECT `id` FROM BI_accounts WHERE `user_id` =" + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.with_account_type + "')),";
-        newquery9 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
-        newquery9 += " (SELECT `id` FROM BI_accounts WHERE `user_id` = " + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.with_account_type + "')),";
-        newquery9 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
-        newquery9 += " " - String(req.query.withdrawlAmt) + ", CURRENT_TIMESTAMP, 4, 'WITHDRAWL', CURRENT_TIMESTAMP, 0);";
-        console.log(newquery9);
-        mysql.pool.query(newquery9, function (err, rows) {
-            if (err) {
-                next(err);
-                return;
             }
+            var newquery9 = "INSERT INTO BI_account_transactions (`payee_account_id`, `payee_name`, `payer_account_id`, `payer_name`, `amount`, `transaction_date`, `transaction_type_id`, `memo`, `posting_date`, `isVoid`)";
+            newquery9 += " VALUES ((SELECT `id` FROM BI_accounts WHERE `user_id` =" + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.with_account_type + "')),";
+            newquery9 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
+            newquery9 += " (SELECT `id` FROM BI_accounts WHERE `user_id` = " + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.with_account_type + "')),";
+            newquery9 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
+            newquery9 += " " - String(req.query.withdrawlAmt) + ", CURRENT_TIMESTAMP, 4, 'WITHDRAWL', CURRENT_TIMESTAMP, 0);";
+            console.log(newquery9);
+            mysql.pool.query(newquery9, function (err, rows) {
+                if (err) {
+                    next(err);
+                    return;
+                }
+            })
         })
-    })
         if (rows.length == 0) {
             context.error = "You do not have that type of account";
             res.render('error', context);
@@ -186,7 +186,7 @@ app.get('/', function (req, res, next) {
             res.render('main_page', context);
         }
 
-  } else if (req.query.paymentAmt != 0 && req.query.paymentAmt != '' && req.query.paymentAmt != null) {
+    } else if (req.query.paymentAmt != 0 && req.query.paymentAmt != '' && req.query.paymentAmt != null) {
         var newquery10 = "UPDATE BI_accounts SET `current_balance` = `current_balance` - " + String(req.query.paymentAmt) + " WHERE `user_id` =" + curId + " AND `account_type_id`=";
         newquery10 += "(SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.payment_from + "')";
         console.log(newquery10);
@@ -194,43 +194,43 @@ app.get('/', function (req, res, next) {
             if (err) {
                 next(err);
                 return;
-        }
-        var newquery11 = "INSERT INTO BI_account_transactions (`payee_account_id`, `payee_name`, `payer_account_id`, `payer_name`, `amount`, `transaction_date`, `transaction_type_id`, `memo`, `posting_date`, `isVoid`)";
-        newquery11 += " VALUES (((SELECT `id` FROM BI_accounts WHERE `user_id` = (SELECT `id` from BI_user WHERE `username` ='" + req.query.payment_to + "') AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='Checking'))),";
-        newquery11 += " (SELECT `username` FROM BI_user WHERE `username` ='" + req.query.payment_to + "'),";
-        newquery11 += " (SELECT `id` FROM BI_accounts WHERE `user_id` = " + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.payment_from + "')),";
-        newquery11 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
-        newquery11 += " " - String(req.query.paymentAmt) + ", CURRENT_TIMESTAMP, 2, 'PAYMENT', CURRENT_TIMESTAMP, 0);";
-        console.log(newquery11);
-        mysql.pool.query(newquery11, function (err, rows) {
-            if (err) {
-                next(err);
-                return;
             }
+            var newquery11 = "INSERT INTO BI_account_transactions (`payee_account_id`, `payee_name`, `payer_account_id`, `payer_name`, `amount`, `transaction_date`, `transaction_type_id`, `memo`, `posting_date`, `isVoid`)";
+            newquery11 += " VALUES (((SELECT `id` FROM BI_accounts WHERE `user_id` = (SELECT `id` from BI_user WHERE `username` ='" + req.query.payment_to + "') AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='Checking'))),";
+            newquery11 += " (SELECT `username` FROM BI_user WHERE `username` ='" + req.query.payment_to + "'),";
+            newquery11 += " (SELECT `id` FROM BI_accounts WHERE `user_id` = " + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.payment_from + "')),";
+            newquery11 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
+            newquery11 += " " - String(req.query.paymentAmt) + ", CURRENT_TIMESTAMP, 2, 'PAYMENT', CURRENT_TIMESTAMP, 0);";
+            console.log(newquery11);
+            mysql.pool.query(newquery11, function (err, rows) {
+                if (err) {
+                    next(err);
+                    return;
+                }
+            })
         })
-     })
-       var newquery12 = "UPDATE BI_accounts SET `current_balance` = `current_balance` + " + String(req.query.paymentAmt) + " WHERE `user_id` = (SELECT `id` FROM BI_user WHERE `username` = '" + req.query.payment_to + "')";
-       newquery12 += " AND `account_type_id`= (SELECT `id` FROM BI_account_types WHERE `type_name` ='Checking')";
-       console.log(newquery12);
-       mysql.pool.query(newquery12, function (err, rows) {
+        var newquery12 = "UPDATE BI_accounts SET `current_balance` = `current_balance` + " + String(req.query.paymentAmt) + " WHERE `user_id` = (SELECT `id` FROM BI_user WHERE `username` = '" + req.query.payment_to + "')";
+        newquery12 += " AND `account_type_id`= (SELECT `id` FROM BI_account_types WHERE `type_name` ='Checking')";
+        console.log(newquery12);
+        mysql.pool.query(newquery12, function (err, rows) {
             if (err) {
                 next(err);
                 return;
             }
-        var newquery13 = "INSERT INTO BI_account_transactions (`payee_account_id`, `payee_name`, `payer_account_id`, `payer_name`, `amount`, `transaction_date`, `transaction_type_id`, `memo`, `posting_date`, `isVoid`)";
-        newquery13 += " VALUES (((SELECT `id` FROM BI_accounts WHERE `user_id` = (SELECT `id` from BI_user WHERE `username` ='" + req.query.payment_to + "') AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='Checking'))),";
-        newquery13 += " (SELECT `username` FROM BI_user WHERE `username` ='" + req.query.payment_to + "'),";
-        newquery13 += " (SELECT `id` FROM BI_accounts WHERE `user_id` = " + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.payment_from + "')),";
-        newquery13 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
-        newquery13 += " " + String(req.query.paymentAmt) + ", CURRENT_TIMESTAMP, 2, 'PAYMENT', CURRENT_TIMESTAMP, 0);";
-        console.log(newquery13);
-        mysql.pool.query(newquery13, function (err, rows) {
-            if (err) {
-                next(err);
-                return;
-            }
-       })
-    })
+            var newquery13 = "INSERT INTO BI_account_transactions (`payee_account_id`, `payee_name`, `payer_account_id`, `payer_name`, `amount`, `transaction_date`, `transaction_type_id`, `memo`, `posting_date`, `isVoid`)";
+            newquery13 += " VALUES (((SELECT `id` FROM BI_accounts WHERE `user_id` = (SELECT `id` from BI_user WHERE `username` ='" + req.query.payment_to + "') AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='Checking'))),";
+            newquery13 += " (SELECT `username` FROM BI_user WHERE `username` ='" + req.query.payment_to + "'),";
+            newquery13 += " (SELECT `id` FROM BI_accounts WHERE `user_id` = " + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.payment_from + "')),";
+            newquery13 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
+            newquery13 += " " + String(req.query.paymentAmt) + ", CURRENT_TIMESTAMP, 2, 'PAYMENT', CURRENT_TIMESTAMP, 0);";
+            console.log(newquery13);
+            mysql.pool.query(newquery13, function (err, rows) {
+                if (err) {
+                    next(err);
+                    return;
+                }
+            })
+        })
         if (rows.length == 0) {
             context.error = "You do not have that type of account";
             res.render('error', context);
@@ -240,7 +240,7 @@ app.get('/', function (req, res, next) {
             res.render('main_page', context);
         }
 
-  } else if (req.query.transferAmt != 0 && req.query.transferAmt != '' && req.query.transferAmt != null) {
+    } else if (req.query.transferAmt != 0 && req.query.transferAmt != '' && req.query.transferAmt != null) {
         var newquery14 = "UPDATE BI_accounts SET `current_balance` = `current_balance` - " + String(req.query.transferAmt) + " WHERE `user_id` =" + curId + " AND `account_type_id`=";
         newquery14 += "(SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.transfer_from + "')";
         console.log(newquery14);
@@ -248,43 +248,43 @@ app.get('/', function (req, res, next) {
             if (err) {
                 next(err);
                 return;
-        }
-        var newquery15 = "INSERT INTO BI_account_transactions (`payee_account_id`, `payee_name`, `payer_account_id`, `payer_name`, `amount`, `transaction_date`, `transaction_type_id`, `memo`, `posting_date`, `isVoid`)";
-        newquery15 += " VALUES ((SELECT `id` FROM BI_accounts WHERE `user_id` =" + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.transfer_to + "')),";
-        newquery15 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
-        newquery15 += " (SELECT `id` FROM BI_accounts WHERE `user_id` = " + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.transfer_from + "')),";
-        newquery15 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
-        newquery15 += " " - String(req.query.transferAmt) + ", CURRENT_TIMESTAMP, 3, 'TRANSFER', CURRENT_TIMESTAMP, 0);";
-        console.log(newquery15);
-        mysql.pool.query(newquery15, function (err, rows) {
-            if (err) {
-                next(err);
-                return;
             }
+            var newquery15 = "INSERT INTO BI_account_transactions (`payee_account_id`, `payee_name`, `payer_account_id`, `payer_name`, `amount`, `transaction_date`, `transaction_type_id`, `memo`, `posting_date`, `isVoid`)";
+            newquery15 += " VALUES ((SELECT `id` FROM BI_accounts WHERE `user_id` =" + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.transfer_to + "')),";
+            newquery15 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
+            newquery15 += " (SELECT `id` FROM BI_accounts WHERE `user_id` = " + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.transfer_from + "')),";
+            newquery15 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
+            newquery15 += " " - String(req.query.transferAmt) + ", CURRENT_TIMESTAMP, 3, 'TRANSFER', CURRENT_TIMESTAMP, 0);";
+            console.log(newquery15);
+            mysql.pool.query(newquery15, function (err, rows) {
+                if (err) {
+                    next(err);
+                    return;
+                }
+            })
         })
-     })
-       var newquery16 = "UPDATE BI_accounts SET `current_balance` = `current_balance` + " + String(req.query.transferAmt) + " WHERE `user_id` =" + curId + " AND `account_type_id`=";
-       newquery16 += "(SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.transfer_to + "')";
-       console.log(newquery16);
-       mysql.pool.query(newquery16, function (err, rows) {
+        var newquery16 = "UPDATE BI_accounts SET `current_balance` = `current_balance` + " + String(req.query.transferAmt) + " WHERE `user_id` =" + curId + " AND `account_type_id`=";
+        newquery16 += "(SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.transfer_to + "')";
+        console.log(newquery16);
+        mysql.pool.query(newquery16, function (err, rows) {
             if (err) {
                 next(err);
                 return;
             }
-        var newquery17 = "INSERT INTO BI_account_transactions (`payee_account_id`, `payee_name`, `payer_account_id`, `payer_name`, `amount`, `transaction_date`, `transaction_type_id`, `memo`, `posting_date`, `isVoid`)";
-        newquery17 += " VALUES ((SELECT `id` FROM BI_accounts WHERE `user_id` =" + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.transfer_to + "')),";
-        newquery17 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
-        newquery17 += " (SELECT `id` FROM BI_accounts WHERE `user_id` = " + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.transfer_from + "')),";
-        newquery17 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
-        newquery17 += " " + String(req.query.transferAmt) + ", CURRENT_TIMESTAMP, 3, 'TRANSFER', CURRENT_TIMESTAMP, 0);";
-        console.log(newquery17);
-        mysql.pool.query(newquery17, function (err, rows) {
-            if (err) {
-                next(err);
-                return;
-            }
-       })
-    })
+            var newquery17 = "INSERT INTO BI_account_transactions (`payee_account_id`, `payee_name`, `payer_account_id`, `payer_name`, `amount`, `transaction_date`, `transaction_type_id`, `memo`, `posting_date`, `isVoid`)";
+            newquery17 += " VALUES ((SELECT `id` FROM BI_accounts WHERE `user_id` =" + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.transfer_to + "')),";
+            newquery17 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
+            newquery17 += " (SELECT `id` FROM BI_accounts WHERE `user_id` = " + curId + " AND `account_type_id` = (SELECT `id` FROM BI_account_types WHERE `type_name` ='" + req.query.transfer_from + "')),";
+            newquery17 += " (SELECT `username` FROM BI_user WHERE `id` =" + curId + "),";
+            newquery17 += " " + String(req.query.transferAmt) + ", CURRENT_TIMESTAMP, 3, 'TRANSFER', CURRENT_TIMESTAMP, 0);";
+            console.log(newquery17);
+            mysql.pool.query(newquery17, function (err, rows) {
+                if (err) {
+                    next(err);
+                    return;
+                }
+            })
+        })
         if (rows.length == 0) {
             context.error = "You do not have that type of account";
             res.render('error', context);
@@ -301,7 +301,7 @@ app.get('/', function (req, res, next) {
         }
 
         context.loggedInUser = currentUser;
-					res.render('main_page', context);
+        res.render('main_page', context);
     });
 });
 
@@ -311,9 +311,23 @@ app.use(function (req, res) {
 });
 
 app.use(function (err, req, res, next) {
-    console.error(err.stack);
-    res.status(500);
-    res.render('500');
+    var context = {};
+    context.errCode = 'Cannot deposit/withdraw/transfer money to/from an account that doesn\'t exist';
+    var s = String(err.stack).split('(');
+    console.log(s[0]);
+    if (s[0].search("Error: ER_BAD_NULL_ERROR: Column 'payee_account_id' cannot be null") != -1) {
+        context.errCode = 'Cannot deposit/withdraw/transfer money to/from an account that doesn\'t exist';
+        res.render('500', context);
+    }
+    else if (s[0].search("Error: ER_DUP_ENTRY: Duplicate entry") != -1) {
+        context.errCode = 'This would be a duplicate entry which is not allowed';
+        res.render('500', context)
+    }
+
+    else {
+        res.status(500);
+        res.render('500', context);
+    }
 });
 
 app.listen(app.get('port'), function () {
