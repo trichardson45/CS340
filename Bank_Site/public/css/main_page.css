@@ -1,23 +1,15 @@
 form {
      border-style: solid;
     width: 510px;
+    margin: 20px;
 }
 div {
-    position: absolute;
+    position: relative;
 }
 .evenRow {
     width: 241px;
 }
-#createUserForm {
-  left: 530px;
-}
-#openAnAccount {
-    top: 311px;
-}
-#closeAnAccount{
-    top: 311px;
-    left: 530px;
-}
+
 input {
     margin-left: 10px;
     margin-right: 10px;
@@ -33,20 +25,7 @@ label {
 #heading {
     background-color: aqua;
 }
-#makeADeposit {
-    top: 540px;
-}
-#makeAWithdrawl {
-  top: 540px;
-  left: 530px;
-}
-#makeAPayment {
-  top: 700px;
-}
-#makeATransfer {
-  top:700px;
-  left: 530px;
-}
+
 th {
   text-align: left;
 }
