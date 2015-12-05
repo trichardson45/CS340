@@ -140,13 +140,17 @@ app.get('/', function (req, res, next) {
             console.log(newquery7);
             mysql.pool.query(newquery7, function (err, rows) {
                 if (err) {
-                    next(err);
-                    return;
+                    //next(err);
+                    if (rows.length == 0) {
+                        context.error = "You do not have that type of account";
+                        res.render('error', context);
+                    }
+                    //return;
                 }
-                if (rows.length == 0) {
+                /*if (rows.length == 0) {
                     context.error = "You do not have that type of account";
                     res.render('error', context);
-                }
+                }*/
                 else {
                     context.loggedInUser = currentUser;
                     res.render('main_page', context);
