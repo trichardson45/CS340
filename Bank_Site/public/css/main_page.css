@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 form {
      border-style: solid;
     width: 510px;
@@ -33,7 +33,7 @@ th {
 h4 {
   padding-left: 5px;
 }
-=======
+
 form {
      border-style: solid;
     width: 510px;
@@ -59,7 +59,8 @@ label {
     font-weight: bold;
 }
 #heading {
-    background-color: aqua;
+    background-color: darkturquoise;
+    width: 1126px;
 }
 
 th {
@@ -68,4 +69,10 @@ th {
 h4 {
   padding-left: 5px;
 }
->>>>>>> 0ed447badb156b14774fc2295cba591e7d1160fd
+
+#directions {
+    border-style: dashed;
+    background-color: greenyellow;
+    width: 1121px;
+
+}
